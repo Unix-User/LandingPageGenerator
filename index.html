@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <!-- Bem-vindo ao meu pesadelo em HTML. Aproveite a estadia! -->
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Ollama Landing Page Generator (Ou: Como Eu Decidi Tornar Todos os Designers
+      Desempregados)
+    </title>
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-XRFWQXKB2Y"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-XRFWQXKB2Y");
+    </script>
+    <!-- Open Graph tags: Porque todo mundo adora compartilhar suas péssimas decisões nas redes sociais -->
+    <meta property="og:title" content="Ollama Landing Page Generator" />
+    <meta
+      property="og:description"
+      content="Gerador de Landing Pages por IA que torna designers obsoletos"
+    />
+    <meta property="og:image" content="https://olpg.udianix.com.br/ollama.jpeg" />
+    <meta property="og:url" content="https://olpg.udianix.com.br" />
+    <meta property="og:type" content="website" />
+    <!-- Twitter Card tags: Para quando você quiser anunciar sua incompetência em 280 caracteres ou menos -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Ollama Landing Page Generator" />
+    <meta
+      name="twitter:description"
+      content="Gerador de Landing Pages por IA que torna designers obsoletos"
+    />
+    <meta name="twitter:image" content="https://olpg.udianix.com.br/ollama.jpeg" />
+    <style>
+      /* CSS: Onde a estética vai para morrer */
+      body {
+        font-family: "Comic Sans MS", cursive; /* Porque profissionalismo é superestimado */
+        line-height: 1.6;
+        color: #333;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      header {
+        background-color: #3498db;
+        color: #fff;
+        text-align: center;
+        padding: 1rem;
+      }
+      nav {
+        background-color: #2980b9;
+        padding: 0.5rem;
+      }
+      nav a {
+        color: #fff;
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        transition: background-color 0.3s;
+      }
+      nav a:hover {
+        background-color: #1c638e;
+      }
+      h1,
+      h2 {
+        color: #2c3e50;
+      }
+      .content {
+        background-color: #fff;
+        padding: 2rem;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      #prompt {
+        width: 100%;
+        padding: 10px;
+        margin: 20px 0;
+        font-size: 16px;
+        box-sizing: border-box;
+      }
+      button {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      button:hover {
+        background-color: #2980b9;
+      }
+      #loading {
+        display: none;
+        margin-top: 20px;
+        font-style: italic;
+        color: #666;
+      }
+      footer {
+        text-align: center;
+        padding: 1rem;
+        background-color: #34495e;
+        color: #ecf0f1;
+        margin-top: 2rem;
+      }
+      .ollama-image {
+        max-width: 150px;
+        height: auto;
+        margin: 4% 0 20px 20px;
+        border-radius: 5%;
+        object-fit: cover;
+      }
+      .intro-section {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        justify-content: space-between;
+      }
+      .intro-text {
+        flex: 1;
+        min-width: 200px;
+      }
+      @media (max-width: 600px) {
+        .ollama-image {
+          float: none;
+          margin: 0 auto 20px;
+          display: block;
+        }
+        .intro-section {
+          flex-direction: column-reverse;
+        }
+      }
+      .feature-list {
+        list-style-type: none;
+        padding-left: 0;
+      }
+      .feature-list li:before {
+        content: "🤖 "; /* Porque robôs são o futuro (e o fim) dos empregos */
+        color: #27ae60;
+        font-weight: bold;
+        margin-right: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Cabeçalho: Onde anunciamos nossa missão de destruir carreiras -->
+    <header>
+      <h1>Ollama Landing Page Generator</h1>
+      <h2>Porque Quem Precisa de Designers Quando Temos IA?</h2>
+    </header>
+
+    <!-- Navegação: Para quando você quiser se perder em outras páginas igualmente inúteis -->
+    <nav>
+      <a href="/index.html">Início (do Seu Pesadelo Profissional)</a>
+      <a href="/about.html">Sobre (Nossa Missão de Destruir Empregos)</a>
+      <a
+        href="https://github.com/Unix-User"
+        target="_blank"
+        rel="noopener noreferrer"
+        >Autor (Um Programador com Complexo de Deus)</a
+      >
+    </nav>
+
+    <div class="container">
+      <div class="content">
+        <!-- Seção de introdução: Onde vendemos a ideia de que isso é uma boa ideia -->
+        <div class="intro-section">
+          <div class="intro-text">
+            <h2>Crie a sua Landing Page! (E Demita Seu Designer!🔥👿🔥👿🔥)</h2>
+            <p>
+              Bem-vindo ao nosso revolucionário Gerador de Landing Page por IA,
+              a ferramenta que prova que até um macaco com um teclado pode criar
+              uma página web decente! Quem precisa de anos de estudo e
+              experiência quando temos algoritmos, não é mesmo?
+            </p>
+          </div>
+          <img
+            src="/ollama.jpeg"
+            alt="Ollama (Nosso Novo Overlord)"
+            class="ollama-image"
+          />
+        </div>
+
+        <!-- Como funciona: Ou como eu gosto de chamar, "O guia do desemprego em apenas 1 passo" -->
+        <h3>
+          Como Funciona (Ou: Como Tornar Designers Obsoletos em Apenas 1 Passo)
+        </h3>
+        <p>
+          Digite seu prompt abaixo e nossa IA super avançada (leia-se: um
+          conjunto de 'if' statements) gerará uma landing page tão incrível que
+          você vai se perguntar por que ainda paga designers. Ah, e não se
+          preocupe com direitos autorais das imagens, nós pegamos tudo do
+          Unsplash. Ética? Nunca ouvi falar.
+        </p>
+
+        <!-- Input: Onde você digita seus sonhos para que a IA possa destruí-los -->
+        <input
+          type="text"
+          id="prompt"
+          placeholder="Digite seu prompt aqui (ou deixe em branco para resultados aleatórios, dá no mesmo)"
+        />
+        <button onclick="generateLandingPage()">
+          Gerar Landing Page (e Destruir Sonhos)
+        </button>
+
+        <!-- Loading: Para quando você quiser refletir sobre suas escolhas de vida -->
+        <div id="loading">
+          Gerando a landing page. Isso pode levar até 5 a 10 minutos(tá
+          hospedado no meu PC da Xuxa). Por favor, aguarde... (ou vá tomar um
+          café, repensar suas escolhas de vida, chorar no banheiro, você
+          escolhe)
+        </div>
+
+        <!-- Recursos: Uma lista de razões pelas quais você deveria reconsiderar usar isso -->
+        <h3>
+          Recursos Principais (Como Nós Nos Convencemos que Isso é uma Boa
+          Ideia?🤦)
+        </h3>
+        <ul class="feature-list">
+          <li>
+            Geração instantânea de landing pages (Porque quem precisa de
+            pensamento crítico?)
+          </li>
+          <li>
+            Conteúdo "persuasivo" por IA (Tão persuasivo quanto um vendedor de
+            enciclopédias bêbado)
+          </li>
+          <li>
+            Seleção automática de imagens (Prepare-se para fotos de gatos em
+            páginas sobre finanças)
+          </li>
+          <li>
+            Design "intuitivo" por algoritmos (Se você considerar "intuitivo"
+            sinônimo de "caótico")
+          </li>
+          <li>
+            Personalização flexível (Flexível como a moral de quem criou isso)
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Rodapé: Onde enterramos as últimas esperanças dos designers -->
+    <footer>
+      <p>
+        Projeto criado por
+        <a
+          href="https://github.com/Unix-User"
+          target="_blank"
+          rel="noopener noreferrer"
+          style="color: #3498db"
+        >
+          Unix-User
+        </a>
+        | &copy; 2023 Nenhum direito reservado (assim como o futuro dos
+        designers)
+      </p>
+    </footer>
+
+    <script>
+      // JavaScript: Porque nada diz "qualidade" como código escrito às 3 da manhã
+      function generateLandingPage() {
+        const prompt = document.getElementById("prompt").value.trim();
+        if (prompt) {
+          document.getElementById("loading").style.display = "block";
+          window.location.href = `/generate?mensagem=${encodeURIComponent(
+            prompt
+          )}`;
+        } else {
+          alert(
+            "Por favor, insira um prompt antes de gerar a landing page. Ou não, a IA provavelmente vai ignorar de qualquer jeito."
+          );
+        }
+      }
+    </script>
+  </body>
+</html>
