@@ -17,7 +17,7 @@ Este projeto é um gerador de landing pages utilizando IA, que busca imagens no 
 1. Clone o repositório:
    ```bash
    git clone https://github.com/Unix-User/LandingPageGenerator.git
-   cd ollama-landing-page-generator
+   cd landingpagegenerator
    ```
 
 2. Instale as dependências:
