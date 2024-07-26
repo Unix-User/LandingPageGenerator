@@ -8,6 +8,7 @@ Este projeto é um gerador de landing pages utilizando IA, que busca imagens no 
 
 ## Pré-requisitos
 
+- Ollama instalado e configurado
 - Node.js (versão 14 ou superior)
 - npm (gerenciador de pacotes do Node.js)
 - Conta no Unsplash para obter uma chave de acesso
