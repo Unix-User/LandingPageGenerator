@@ -28,11 +28,22 @@ Este projeto é um gerador de landing pages utilizando IA, que busca imagens no 
 
 3. Crie um arquivo `.env` na raiz do projeto e adicione suas variáveis de ambiente:
    ```plaintext
-   UNSPLASH_ACCESS_KEY=your_unsplash_access_key
+   UNSPLASH_ACCESS_KEY='UNSPLASH_KEY'
    PORT=3001
-   AI_MODEL=llama3
+   # API_PROVIDER can be 'ollama' or 'openai'
+   API_PROVIDER=openai
+   AI_MODEL="llama3.2"
+
+   # Only needed if API_PROVIDER is set to 'ollama'
    OLLAMA_API_HOST=localhost
    OLLAMA_API_PORT=11434
+
+   # OpenAI API Configuration (when API_PROVIDER is set to 'openai')
+   # These settings are required for using an OpenAI-compatible API, such as open-webui (https://github.com/open-webui/open-webui).
+   # OPENAI_API_HOST: Host address for the OpenAI API. Default is 'https://api.openai.com/v1', but can be customized.
+   # OPENAI_API_KEY: API key for authenticating with the specified OpenAI API host.
+   OPENAI_API_HOST=https://ollama.udianix.com.br/api
+   OPENAI_API_KEY=sk-e19ebeee7b0143db8240caf164a38e62
    ```
 
 ## Uso
