@@ -120,7 +120,13 @@ http.createServer((req, res) => {
         case "/index.html":
             handleStaticFile(res, "index.html");
             break;
+        case "/index-en.html":
+            handleStaticFile(res, "index.html");
+            break;
         case "/about.html":
+            handleStaticFile(res, "about.html");
+            break;
+        case "/about-en.html":
             handleStaticFile(res, "about.html");
             break;
         case "/ollama.jpeg":
@@ -174,7 +180,7 @@ async function makeAIRequest(postData, callback) {
                             callback(responseText);
                         } else {
                             console.error("Unexpected Ollama response structure:", jsonResponse);
-                             callback(null);
+                            callback(null);
                         }
                     } catch (error) {
                         console.error("Error parsing Ollama response:", error);
@@ -185,7 +191,7 @@ async function makeAIRequest(postData, callback) {
 
             req.on("error", (error) => {
                 console.error("Error making Ollama request:", error);
-                 callback(null);
+                callback(null);
             });
 
             req.write(JSON.stringify(postData));
@@ -257,7 +263,7 @@ async function makeAIRequest(postData, callback) {
     } catch (error) {
         console.error("Error in makeAIRequest:", error);
         callback(null);
-         
+
     }
 }
 
