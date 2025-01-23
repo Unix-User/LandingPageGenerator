@@ -22,7 +22,24 @@ const handleStaticFile = (res, fileName, contentType = "text/html") => {
     fs.readFile(filePath, (err, content) => {
         if (err) {
             res.writeHead(500, { "Content-Type": "text/html" });
-            res.end(`<html><body><h1>Error loading the file</h1><p>${err.message}</p></body></html>`);
+            res.end(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Error Loading File</title>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                </head>
+                <body>
+                    <h1>Error loading the file</h1>
+                    <p>There was a problem loading '${fileName}'.</p>
+                    <p>Error details: ${err.message}</p>
+                    <button onclick="window.location.reload()">Refresh</button>
+                    <hr>
+                    <p style="font-size: small;">Please check the file path and try again. If the issue persists, contact the administrator.</p>
+                </body>
+                </html>
+            `);
         } else {
             res.writeHead(200, { "Content-Type": contentType });
             res.end(content);
@@ -34,7 +51,24 @@ const handleAIResponse = (res, siteContent) => {
     if (!siteContent) {
         console.error("Site content is null, cannot proceed with filtering.");
         res.writeHead(500, { "Content-Type": "text/html; charset=utf-8" });
-        res.end("<html><body><h1>Error: Failed to generate site content.< /h1><p>There was an error with the AI model. Please try again.</p><button onclick=\"window.location.reload()\">Refresh</button></body></html >");
+        res.end(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>AI Response Error</title>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            </head>
+            <body>
+                <h1>Error: Failed to generate site content.</h1>
+                <p>There was an error processing your request with the AI model.</p>
+                <p>Please try again. If the issue persists, consider checking the AI model configuration.</p>
+                <button onclick="window.location.reload()">Refresh</button>
+                <hr>
+                <p style="font-size: small;">Possible causes include AI model unavailability or issues with the prompt processing.</p>
+            </body>
+            </html>
+        `);
         return;
     }
 
@@ -60,7 +94,24 @@ const generateSite = (res, mensagem) => {
             if (!imageUrls || imageUrls.length === 0) {
                 console.error("No images found for the given prompt.");
                 res.writeHead(500, { "Content-Type": "text/html; charset=utf-8" });
-                res.end("<html><body><h1>Error: No images found.</h1></body></html>");
+                res.end(`
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>Image Search Error</title>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    </head>
+                    <body>
+                        <h1>Error: No images found.</h1>
+                        <p>Unfortunately, we could not find any relevant images for your request.</p>
+                        <p>Please try a different search term or ensure your query is valid.</p>
+                        <button onclick="window.location.reload()">Refresh</button>
+                        <hr>
+                        <p style="font-size: small;">This might be due to limitations with the Unsplash API or the specificity of your request.</p>
+                    </body>
+                    </html>
+                `);
                 return;
             }
             const sitePrompt = `Create HTML for a simple, well-structured, and informative landing page about "${mensagem}". Requirements:
@@ -138,12 +189,45 @@ http.createServer((req, res) => {
                 generateSite(res, mensagem);
             } else {
                 res.writeHead(400, { "Content-Type": "text/html; charset=utf-8" });
-                res.end("<html><body><h1>Error: Missing 'mensagem' parameter</h1></body></html>");
+                res.end(`
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>Bad Request</title>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    </head>
+                    <body>
+                        <h1>Error: Missing 'mensagem' parameter</h1>
+                        <p>The request was malformed.</p>
+                        <p>Please ensure you provide the 'mensagem' parameter in the URL query.</p>
+                        <hr>
+                        <p style="font-size: small;">Example: /generate?mensagem=your+message</p>
+                    </body>
+                    </html>
+                `);
             }
             break;
         default:
             res.writeHead(404, { "Content-Type": "text/html; charset=utf-8" });
-            res.end("<html><body><h1>Error: Not Found</h1></body></html>");
+            res.end(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Not Found</title>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                </head>
+                <body>
+                    <h1>Error: Not Found</h1>
+                    <p>The requested resource could not be found on this server.</p>
+                    <p>Please check the URL and try again.</p>
+                    <a href="/">Go to Homepage</a>
+                    <hr>
+                    <p style="font-size: small;">If you believe this is an error, please contact the administrator.</p>
+                </body>
+                </html>
+            `);
     }
 }).listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
