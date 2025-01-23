@@ -186,9 +186,9 @@ http.createServer((req, res) => {
             handleStaticFile(res, "ollama.jpeg", "image/jpeg");
             break;
         case "/generate":
-            const { message } = parsedUrl.query;
+            const { message, language } = parsedUrl.query;
             if (message) {
-                generateSite(res, message);
+                generateSite(res, language, message);
             } else {
                 res.writeHead(400, { "Content-Type": "text/html; charset=utf-8" });
                 res.end(`
