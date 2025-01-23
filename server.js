@@ -79,7 +79,8 @@ const handleAIResponse = (res, siteContent) => {
 };
 
 
-const generateSite = (res, language, message) => {
+const generateSite = (res, language, mensagem) => {
+    const message = mensagem === '' ? 'Web developer looking for a job' : mensagem;
     const targetLanguage = language === 'pt-br' ? 'pt-br' : 'en-us';
     const imagePromptRequest = {
         model: AI_MODEL,
