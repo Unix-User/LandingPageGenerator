@@ -79,10 +79,11 @@ const handleAIResponse = (res, siteContent) => {
 };
 
 
-const generateSite = (res, mensagem) => {
+const generateSite = (res, language, message) => {
+    const targetLanguage = language === 'pt-br' ? 'pt-br' : 'en-us';
     const imagePromptRequest = {
         model: AI_MODEL,
-        prompt: `Generate 3-5 keywords for Unsplash image search related to "${mensagem}". Output format: keyword1, keyword2, keyword3`,
+        prompt: `Generate 3-5 keywords in "${targetLanguage}" language for Unsplash image search related to "${message}". Output format: keyword1, keyword2, keyword3`,
         stream: false,
     };
     console.log("Sending image prompt request to AI:", imagePromptRequest);
@@ -114,7 +115,7 @@ const generateSite = (res, mensagem) => {
                 `);
                 return;
             }
-            const sitePrompt = `Create HTML for a simple, well-structured, and informative landing page about "${mensagem}". Requirements:
+            const sitePrompt = `Create HTML for a simple, well-structured, and informative landing page about "${message}" using "${targetLanguage}". Requirements:
 1. Responsive design using flexbox or CSS grid
 2. Clean and modern aesthetic
 3. Simple navigation with Home(/index.html), About(/about.html), and Author(https://github.com/Unix-User) links at the top of the page
@@ -184,9 +185,9 @@ http.createServer((req, res) => {
             handleStaticFile(res, "ollama.jpeg", "image/jpeg");
             break;
         case "/generate":
-            const { mensagem } = parsedUrl.query;
-            if (mensagem) {
-                generateSite(res, mensagem);
+            const { message } = parsedUrl.query;
+            if (message) {
+                generateSite(res, message);
             } else {
                 res.writeHead(400, { "Content-Type": "text/html; charset=utf-8" });
                 res.end(`
@@ -198,11 +199,11 @@ http.createServer((req, res) => {
                         <meta name="viewport" content="width=device-width, initial-scale=1.0">
                     </head>
                     <body>
-                        <h1>Error: Missing 'mensagem' parameter</h1>
+                        <h1>Error: Missing 'message' parameter</h1>
                         <p>The request was malformed.</p>
-                        <p>Please ensure you provide the 'mensagem' parameter in the URL query.</p>
+                        <p>Please ensure you provide the 'message' parameter in the URL query.</p>
                         <hr>
-                        <p style="font-size: small;">Example: /generate?mensagem=your+message</p>
+                        <p style="font-size: small;">Example: /generate?language=pt-br&message=your+message</p>
                     </body>
                     </html>
                 `);

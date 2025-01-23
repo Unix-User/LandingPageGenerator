@@ -836,7 +836,7 @@
         const prompt = document.getElementById("prompt").value.trim();
         if (prompt) {
           document.getElementById("loading").style.display = "block";
-          window.location.href = `/generate?mensagem=${encodeURIComponent(
+          window.location.href = `/generate?language=pt-br&mensagem=${encodeURIComponent(
             prompt
           )}`;
         } else {

@@ -420,7 +420,7 @@
         const prompt = document.getElementById("prompt").value.trim();
         if (prompt) {
           document.getElementById("loading").style.display = "block";
-          window.location.href = `/generate?mensagem=${encodeURIComponent(
+          window.location.href = `/generate?language=en-us&mensagem=${encodeURIComponent(
             prompt
           )}`;
         } else {
