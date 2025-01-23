@@ -188,7 +188,7 @@ http.createServer((req, res) => {
         case "/generate":
             const { mensagem, language } = parsedUrl.query;
             if (mensagem) {
-                generateSite(res, language, message);
+                generateSite(res, language, mensagem);
             } else {
                 res.writeHead(400, { "Content-Type": "text/html; charset=utf-8" });
                 res.end(`
