@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="error-title">Error</title>
+    <style>
+        body { 
+            font-family: sans-serif; 
+            text-align: center; 
+            padding: 50px; 
+            background-color: #f4f4f4; 
+        }
+        h1 { 
+            color: #e44d26; 
+            margin-bottom: 20px;
+        }
+        p { 
+            color: #333; 
+            line-height: 1.6;
+        }
+        a { 
+            color: #007bff; 
+            text-decoration: none; 
+            font-weight: bold;
+        }
+        a:hover { 
+            text-decoration: underline; 
+        }
+        .error-details { 
+            margin: 20px auto; 
+            border: 1px solid #ccc; 
+            padding: 20px; 
+            background-color: white; 
+            border-radius: 5px; 
+            max-width: 600px;
+        }
+        .error-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: inline-block;
+            margin: 0 auto;
+        }
+        hr {
+            margin: 20px 0;
+            border: 0;
+            border-top: 1px solid #eee;
+        }
+        .contact-note {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 20px;
+        }
+    </style>
+    <script src="https://unpkg.com/htmx.org@1.9.12" integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="error-container">
+        <h1 id="error-heading">Error!</h1>
+        <div id="error-message">
+            <p>Ocorreu um erro.</p>
+        </div>
+        <a href="/">Voltar para a página inicial</a>
+        <hr>
+        <p class="contact-note">Se você acredita que isso é um erro, por favor, entre em contato con o administrador.</p>
+    </div>
+</body>
+</html>

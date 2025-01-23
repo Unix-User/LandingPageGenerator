@@ -17,58 +17,47 @@ const OPENAI_API_HOST = process.env.OPENAI_API_HOST || 'https://api.openai.com';
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const API_PROVIDER = process.env.API_PROVIDER || 'ollama';
 
-const handleStaticFile = (res, fileName, contentType = "text/html") => {
-    const filePath = path.join(__dirname, fileName);
-    fs.readFile(filePath, (err, content) => {
-        if (err) {
-            res.writeHead(500, { "Content-Type": "text/html" });
-            res.end(`
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>Error Loading File</title>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                </head>
-                <body>
-                    <h1>Error loading the file</h1>
-                    <p>There was a problem loading '${fileName}'.</p>
-                    <p>Error details: ${err.message}</p>
-                    <button onclick="window.location.reload()">Refresh</button>
-                    <hr>
-                    <p style="font-size: small;">Please check the file path and try again. If the issue persists, contact the administrator.</p>
-                </body>
-                </html>
-            `);
-        } else {
-            res.writeHead(200, { "Content-Type": contentType });
-            res.end(content);
-        }
-    });
+const handleStaticFile = (res, fileName, contentType = "text/html", errorType = 'Error', errorMessage = 'Ocorreu um erro.') => {
+    if (fileName) {
+        const filePath = path.join(__dirname, fileName);
+        fs.readFile(filePath, (err, content) => {
+            if (err) {
+                res.writeHead(500, { "Content-Type": "text/plain" });
+                res.end(`Erro interno do servidor ao carregar ${fileName}`);
+                console.error(`Falha ao carregar ${fileName}: ${err}`);
+                return;
+            } else {
+                res.writeHead(200, { "Content-Type": contentType });
+                res.end(content);
+            }
+        });
+    } else {
+        // For error cases, use error.html
+        const filePath = path.join(__dirname, 'error.html');
+        fs.readFile(filePath, (err, content) => {
+            if (err) {
+                res.writeHead(500, { "Content-Type": "text/plain" });
+                res.end(`Erro interno do servidor ao carregar error.html`);
+                console.error(`Falha ao carregar error.html: ${err}`);
+                return;
+            } else {
+                // Replace placeholders in error.html
+                let errorContent = content.toString();
+                errorContent = errorContent.replace('<title id="error-title">Error</title>', `<title id="error-title">${errorType}</title>`);
+                errorContent = errorContent.replace('<h1 id="error-heading">Error!</h1>', `<h1 id="error-heading">${errorType}!</h1>`);
+                errorContent = errorContent.replace('<p >Ocorreu um erro.</p >', `<p>${errorMessage}</p>`);
+
+                res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" }); // Corrected Content-Type for HTML
+                res.end(errorContent);
+            }
+        });
+    }
 };
 
 const handleAIResponse = (res, siteContent) => {
     if (!siteContent) {
         console.error("Site content is null, cannot proceed with filtering.");
-        res.writeHead(500, { "Content-Type": "text/html; charset=utf-8" });
-        res.end(`
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <title>AI Response Error</title>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            </head>
-            <body>
-                <h1>Error: Failed to generate site content.</h1>
-                <p>There was an error processing your request with the AI model.</p>
-                <p>Please try again. If the issue persists, consider checking the AI model configuration.</p>
-                <button onclick="window.location.reload()">Refresh</button>
-                <hr>
-                <p style="font-size: small;">Possible causes include AI model unavailability or issues with the prompt processing.</p>
-            </body>
-            </html>
-        `);
+        handleStaticFile(res, null, "text/html; charset=utf-8", "AI Response Error", "There was an error processing your request with the AI model. Please try again. If the issue persists, consider checking the AI model configuration.");
         return;
     }
 
@@ -80,7 +69,7 @@ const handleAIResponse = (res, siteContent) => {
 
 
 const generateSite = (res, language, mensagem) => {
-    const message = mensagem === '' ? 'Web developer looking for a job' : mensagem;
+    const message = mensagem === undefined ? 'Web developer looking for a job' : mensagem;
     const targetLanguage = language === 'pt-br' ? 'pt-br' : 'en-us';
     const imagePromptRequest = {
         model: AI_MODEL,
@@ -95,25 +84,7 @@ const generateSite = (res, language, mensagem) => {
         searchUnsplashImages(imagePrompt, (imageUrls) => {
             if (!imageUrls || imageUrls.length === 0) {
                 console.error("No images found for the given prompt.");
-                res.writeHead(500, { "Content-Type": "text/html; charset=utf-8" });
-                res.end(`
-                    <!DOCTYPE html>
-                    <html>
-                    <head>
-                        <title>Image Search Error</title>
-                        <meta charset="UTF-8">
-                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    </head>
-                    <body>
-                        <h1>Error: No images found.</h1>
-                        <p>Unfortunately, we could not find any relevant images for your request.</p>
-                        <p>Please try a different search term or ensure your query is valid.</p>
-                        <button onclick="window.location.reload()">Refresh</button>
-                        <hr>
-                        <p style="font-size: small;">This might be due to limitations with the Unsplash API or the specificity of your request.</p>
-                    </body>
-                    </html>
-                `);
+                handleStaticFile(res, null, "text/html; charset=utf-8", "Image Search Error", "Unfortunately, we could not find any relevant images for your request. Please try a different search term or ensure your query is valid.");
                 return;
             }
             const sitePrompt = `Create HTML for a simple, well-structured, and informative landing page about "${message}" using "${targetLanguage}". Requirements:
@@ -187,49 +158,10 @@ http.createServer((req, res) => {
             break;
         case "/generate":
             const { mensagem, language } = parsedUrl.query;
-            if (mensagem) {
-                generateSite(res, language, mensagem);
-            } else {
-                res.writeHead(400, { "Content-Type": "text/html; charset=utf-8" });
-                res.end(`
-                    <!DOCTYPE html>
-                    <html>
-                    <head>
-                        <title>Bad Request</title>
-                        <meta charset="UTF-8">
-                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    </head>
-                    <body>
-                        <h1>Error: Missing 'message' parameter</h1>
-                        <p>The request was malformed.</p>
-                        <p>Please ensure you provide the 'message' parameter in the URL query.</p>
-                        <hr>
-                        <p style="font-size: small;">Example: /generate?language=pt-br&message=your+message</p>
-                    </body>
-                    </html>
-                `);
-            }
+            generateSite(res, language, mensagem);
             break;
         default:
-            res.writeHead(404, { "Content-Type": "text/html; charset=utf-8" });
-            res.end(`
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>Not Found</title>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                </head>
-                <body>
-                    <h1>Error: Not Found</h1>
-                    <p>The requested resource could not be found on this server.</p>
-                    <p>Please check the URL and try again.</p>
-                    <a href="/">Go to Homepage</a>
-                    <hr>
-                    <p style="font-size: small;">If you believe this is an error, please contact the administrator.</p>
-                </body>
-                </html>
-            `);
+            handleStaticFile(res, null, "text/html; charset=utf-8", "Não Encontrado", `Recurso '${parsedUrl.pathname}' não encontrado no servidor.`);
     }
 }).listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
