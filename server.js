@@ -121,13 +121,13 @@ http.createServer((req, res) => {
             handleStaticFile(res, "index.html");
             break;
         case "/index-en.html":
-            handleStaticFile(res, "index.html");
+            handleStaticFile(res, "index-en.html");
             break;
         case "/about.html":
             handleStaticFile(res, "about.html");
             break;
         case "/about-en.html":
-            handleStaticFile(res, "about.html");
+            handleStaticFile(res, "about-en.html");
             break;
         case "/ollama.jpeg":
             handleStaticFile(res, "ollama.jpeg", "image/jpeg");
