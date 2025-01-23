@@ -244,7 +244,7 @@
             flex: 1;
             min-width: 150px;
           "
-          ><span style="display: flex; align-items: center;">
+          ><span style="display: flex; align-items: center">
             Mudar para Português
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -255,7 +255,7 @@
               height="20"
               preserveAspectRatio="xMidYMid meet"
               version="1.0"
-              style="margin-left: 5px;"
+              style="margin-left: 5px"
             >
               <defs>
                 <clipPath id="id1">
@@ -418,16 +418,10 @@
       // JavaScript: Because nothing says "quality" like code written at 3 AM
       function generateLandingPage() {
         const prompt = document.getElementById("prompt").value.trim();
-        if (prompt) {
-          document.getElementById("loading").style.display = "block";
-          window.location.href = `/generate?language=en-us&mensagem=${encodeURIComponent(
-            prompt
-          )}`;
-        } else {
-          alert(
-            "Please enter a prompt before generating the landing page. Or not, the AI will probably ignore it anyway."
-          );
-        }
+        document.getElementById("loading").style.display = "block";
+        window.location.href = `/generate?language=en-us&mensagem=${encodeURIComponent(
+          prompt
+        )}`;
       }
     </script>
   </body>

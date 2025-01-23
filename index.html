@@ -244,7 +244,7 @@
             flex: 1;
             min-width: 150px;
           "
-          ><span style="display: flex; align-items: center;">
+          ><span style="display: flex; align-items: center">
             Change to English
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -255,7 +255,7 @@
               height="20"
               preserveAspectRatio="xMidYMid meet"
               version="1.0"
-              style="margin-left: 5px;"
+              style="margin-left: 5px"
             >
               <defs>
                 <clipPath id="id1">
@@ -834,16 +834,10 @@
       // JavaScript: Porque nada diz "qualidade" como código escrito às 3 da manhã
       function generateLandingPage() {
         const prompt = document.getElementById("prompt").value.trim();
-        if (prompt) {
-          document.getElementById("loading").style.display = "block";
-          window.location.href = `/generate?language=pt-br&mensagem=${encodeURIComponent(
-            prompt
-          )}`;
-        } else {
-          alert(
-            "Por favor, insira um prompt antes de gerar a landing page. Ou não, a IA provavelmente vai ignorar de qualquer jeito."
-          );
-        }
+        document.getElementById("loading").style.display = "block";
+        window.location.href = `/generate?language=pt-br&mensagem=${encodeURIComponent(
+          prompt
+        )}`;
       }
     </script>
   </body>
