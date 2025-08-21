@@ -16,6 +16,7 @@ const OLLAMA_API_PORT = process.env.OLLAMA_API_PORT || 11434;
 const OPENAI_API_HOST = process.env.OPENAI_API_HOST || 'https://api.openai.com';
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const API_PROVIDER = process.env.API_PROVIDER || 'ollama';
+const GOOGLE_AI_API_KEY = process.env.GOOGLE_AI_API_KEY;
 
 const handleStaticFile = (res, fileName, contentType = "text/html", errorType = 'Error', errorMessage = 'Ocorreu um erro.') => {
     if (fileName) {
@@ -32,7 +33,6 @@ const handleStaticFile = (res, fileName, contentType = "text/html", errorType = 
             }
         });
     } else {
-        // For error cases, use error.html
         const filePath = path.join(__dirname, 'error.html');
         fs.readFile(filePath, (err, content) => {
             if (err) {
@@ -41,13 +41,12 @@ const handleStaticFile = (res, fileName, contentType = "text/html", errorType = 
                 console.error(`Falha ao carregar error.html: ${err}`);
                 return;
             } else {
-                // Replace placeholders in error.html
                 let errorContent = content.toString();
                 errorContent = errorContent.replace('<title id="error-title">Error</title>', `<title id="error-title">${errorType}</title>`);
                 errorContent = errorContent.replace('<h1 id="error-heading">Error!</h1>', `<h1 id="error-heading">${errorType}!</h1>`);
                 errorContent = errorContent.replace('<p >Ocorreu um erro.</p >', `<p>${errorMessage}</p>`);
 
-                res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" }); // Corrected Content-Type for HTML
+                res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
                 res.end(errorContent);
             }
         });
@@ -274,10 +273,80 @@ async function makeAIRequest(postData, callback) {
 
             req.write(data);
             req.end();
+        } else if (API_PROVIDER === 'gemini') {
+            const data = JSON.stringify({
+                contents: [{
+                    parts: [{ text: postData.prompt }]
+                }]
+            });
+
+    const options = {
+
+                hostname: 'generativelanguage.googleapis.com',
+                path: `/v1beta/models/${AI_MODEL}:generateContent?key=${GOOGLE_AI_API_KEY}`,
+                method: 'POST',
+        headers: {
+                    'Content-Type': 'application/json',
+                    'Content-Length': Buffer.byteLength(data),
+        },
+    };
+
+            const fullUrl = `https://${options.hostname}${options.path}`;
+            console.log("Sending request to Gemini URL:", fullUrl);
+            console.log("Sending request to Gemini with data:", data);
+
+            const req = https.request(options, (response) => {
+                let responseData = '';
+                response.on('data', (chunk) => {
+                    responseData += chunk;
+            });
+                response.on('end', () => {
+                    if (responseData.trim().startsWith('<')) {
+                        console.error("Received an HTML response instead of JSON. URL might be incorrect. Response:", responseData);
+                            callback(null);
+                            return;
+                    }
+
+                    console.log("Received response from Gemini:", responseData);
+                try {
+                        const jsonResponse = JSON.parse(responseData);
+                        if (jsonResponse.error) {
+                            console.error("Gemini API error:", jsonResponse.error.message);
+                            callback(null);
+                            return;
+                    }
+                        if (!jsonResponse.candidates || jsonResponse.candidates.length === 0) {
+                            console.error("No candidates returned from Gemini. The prompt might have been blocked.", jsonResponse);
+                            callback(null);
+                            return;
+                }
+
+                        let siteContent = jsonResponse.candidates[0].content.parts[0].text;
+                        if (siteContent) {
+                            siteContent = siteContent.replace(/```html/g, '').replace(/```/g, '');
+                            callback(siteContent);
+                        } else {
+                            console.error("Gemini returned empty content.");
+                            callback(null);
+                        }
+                    } catch (error) {
+                        console.error("Error parsing Gemini response:", error);
+                        callback(null);
+                    }
+            });
+        });
+
+            req.on('error', (error) => {
+                console.error("Error making Gemini request:", error);
+                callback(null);
+            });
+
+            req.write(data);
+            req.end();
         } else {
             console.error(`Unsupported API provider: ${API_PROVIDER}`);
             callback(null);
-        }
+}
     } catch (error) {
         console.error("Error in makeAIRequest:", error);
         callback(null);
@@ -338,3 +407,5 @@ function isValidHTML(content) {
         trimmedContent.includes('<body') &&
         trimmedContent.includes('</html>');
 }
+
+
