@@ -281,7 +281,6 @@ async function makeAIRequest(postData, callback) {
             });
 
     const options = {
-
                 hostname: 'generativelanguage.googleapis.com',
                 path: `/v1beta/models/${AI_MODEL}:generateContent?key=${GOOGLE_AI_API_KEY}`,
                 method: 'POST',
@@ -407,5 +406,4 @@ function isValidHTML(content) {
         trimmedContent.includes('<body') &&
         trimmedContent.includes('</html>');
 }
-
 
